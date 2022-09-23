@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const queries = require("./queries");
 
 const app = express();
-const port = 3002;
+const port = process.env.PORT || 3002;
 
 app.get("/", queries.root);
 
