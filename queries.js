@@ -32,10 +32,12 @@ const getTitleStreamingServices = async (req, res) => {
     if (i === 0) titleInfo.metadata = results; // US is first index and metadata is set from its results
     if (results?.offers) {
       const cleanedOffers = cleanOffers(results.offers, element.country);
-      titleInfo.services.push({
-        country: element.country,
-        offers: cleanedOffers,
-      });
+      if (cleanedOffers.length) {
+        titleInfo.services.push({
+          country: element.country,
+          offers: cleanedOffers,
+        });
+      }
     }
   });
   await Promise.all(promises);
