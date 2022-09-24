@@ -5,6 +5,15 @@ const queries = require("./queries");
 const app = express();
 const port = process.env.PORT || 3002;
 
+// https://stackoverflow.com/questions/24897801/enable-access-control-allow-origin-for-multiple-domains-in-node-js
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (process.env.ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  return next();
+});
+
 app.get("/", queries.root);
 
 /**

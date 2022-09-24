@@ -1,5 +1,6 @@
 const JustWatch = require("justwatch-api");
 const allLocalesAndProviders = require("./allLocalesAndProviders.json");
+const { cleanOffers } = require("./utils/cleanOffers");
 const { countriesSort } = require("./utils/countriesSort");
 
 const jw = new JustWatch();
@@ -24,19 +25,21 @@ const search = (req, res) => {
  */
 const getTitleStreamingServices = async (req, res) => {
   const { type, titleId } = req.params;
-  let titleInfo = { metadata: {}, offers: [] };
+  let titleInfo = { metadata: {}, services: [] };
   const promises = allLocalesAndProviders.map(async (element, i) => {
     const localJw = new JustWatch({ locale: element.full_locale });
     const results = await localJw.getTitle(type, titleId);
     if (i === 0) titleInfo.metadata = results; // US is first index and metadata is set from its results
-    results?.offers &&
-      titleInfo.offers.push({
+    if (results?.offers) {
+      const cleanedOffers = cleanOffers(results.offers, element.country);
+      titleInfo.services.push({
         country: element.country,
-        offers: results.offers,
+        offers: cleanedOffers,
       });
+    }
   });
   await Promise.all(promises);
-  titleInfo.offers.sort(countriesSort);
+  titleInfo.services.sort(countriesSort);
   res.send(titleInfo);
 };
 
