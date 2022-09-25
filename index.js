@@ -5,6 +5,7 @@ const queries = require("./queries");
 
 const app = express();
 app.use(morgan("short")); // Connection logging
+app.set("trust proxy", 1);
 const port = process.env.PORT || 3002;
 
 // https://stackoverflow.com/questions/24897801/enable-access-control-allow-origin-for-multiple-domains-in-node-js
