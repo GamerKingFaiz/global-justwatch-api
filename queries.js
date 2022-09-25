@@ -13,11 +13,22 @@ const root = (req, res) => {
 };
 
 /**
+ * /search
+ */
+const getHomePageResults = (req, res) => {
+  jw.search({ query: "" }).then((results) => res.send(results));
+};
+
+/**
  * /search/:query
  */
-const search = (req, res) => {
+const search = async (req, res) => {
   const { query } = req.params;
-  jw.search({ query: query }).then((results) => res.send(results));
+  const results = await jw.request("post", "/titles/en_US/popular", {
+    query: query,
+    page_size: 4,
+  });
+  res.send(results);
 };
 
 /**
@@ -84,6 +95,7 @@ const getAllProviders = async (req, res) => {
 
 module.exports = {
   root,
+  getHomePageResults,
   search,
   getTitleStreamingServices,
   getLocales,

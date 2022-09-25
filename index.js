@@ -21,6 +21,12 @@ app.use((req, res, next) => {
 app.get("/", queries.root);
 
 /**
+ * Returns the top/popular search results
+ * https://apis.justwatch.com/content/titles/en_US/popular
+ */
+app.get("/search/", cache(86400), queries.getHomePageResults);
+
+/**
  * Returns search results based on query
  * https://apis.justwatch.com/content/titles/en_US/popular
  */
