@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const queries = require("./queries");
+const cache = require("./utils/cache");
 
 const app = express();
 app.use(morgan("short")); // Connection logging
@@ -23,13 +24,13 @@ app.get("/", queries.root);
  * Returns search results based on query
  * https://apis.justwatch.com/content/titles/en_US/popular
  */
-app.get("/search/:query", queries.search);
+app.get("/search/:query", cache(86400), queries.search);
 
 /**
  * Returns all streaming services for a title and the title's info
  * https://apis.justwatch.com/content/titles/${type}/${titleId}/locale/${full_locale}
  */
-app.get("/title/:type/:titleId", queries.getTitleStreamingServices);
+app.get("/title/:type/:titleId", cache(86400), queries.getTitleStreamingServices);
 
 /**
  * Returns all locales and returns only country and full_locale
