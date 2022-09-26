@@ -51,7 +51,11 @@ const getTitleStreamingServices = async (req, res) => {
       }
     }
   });
-  await Promise.all(promises);
+  try {
+    await Promise.all(promises);
+  } catch (err) {
+    console.error(err);
+  }
   titleInfo.services.sort(countriesSort);
   res.send(titleInfo);
 };
