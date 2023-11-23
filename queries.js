@@ -151,6 +151,7 @@ const getTitleStreamingServices = async (req, res) => {
             objectId
             offerCount(country: $country, platform: $platform)
             offers(country: $country, platform: $platform, filter: {monetizationTypes: [FLATRATE, FREE, ADS]}) {
+              standardWebURL
               monetizationType
               elementCount
               package {
