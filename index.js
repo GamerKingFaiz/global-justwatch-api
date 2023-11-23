@@ -22,19 +22,16 @@ app.get("/", queries.root);
 
 /**
  * Returns the top/popular search results
- * https://apis.justwatch.com/content/titles/en_US/popular
  */
 app.get("/search/", cache(86400), queries.getHomePageResults);
 
 /**
- * Returns search results based on query
- * https://apis.justwatch.com/content/titles/en_US/popular
+ * Returns search results based on searchTerm
  */
-app.get("/search/:query", cache(86400), queries.search);
+app.get("/search/:searchTerm", cache(86400), queries.search);
 
 /**
  * Returns all streaming services for a title and the title's info
- * https://apis.justwatch.com/content/titles/${type}/${titleId}/locale/${full_locale}
  */
 app.get("/title/:type/:titleId", cache(86400), queries.getTitleStreamingServices);
 
@@ -48,6 +45,7 @@ app.get("/locales", queries.getLocales);
 /**
  * Returns all locales and their providers
  * Only run when allLocalesAndProviders.json needs to be updated
+ * THIS IS NOT NECESSARY ANYMORE AFTER GRAPHQL MIGRATION
  * https://apis.justwatch.com/content/providers/locale/${full_locale}
  */
 app.get("/providers", queries.getAllProviders);
